@@ -1,0 +1,137 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+		<script src="static/anime.js"></script>
+		<script src="static/genre.js"></script>
+		
+		<script src="static/angular-cookie.js"></script>
+		
+		<script src="static/security.js"></script>
+		
+		<script src="static/ui-bootstrap-1.3.3.js"></script>
+		
+		<script src="static/select.js"></script>
+		<link rel="stylesheet" type="text/css" href="static/select.css">
+
+		<link rel="stylesheet" type="text/css" href="static/style.css">
+		
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<title>Anime List</title>
+		<meta charset="utf-8">
+	</head>
+	<body ng-app="AnimeManagement" ng-controller="AnimeController">
+		<div class="page-header col-sm-offset-1 col-sm-10"> 	
+			<span class="glyphicon glyphicon-Anime form-inline" style="font-size: 200%; display: inline-block">
+			</span>				
+			<h1 style="display: inline-block; margin-left: 5%">Anime List Bootstrap Page</h1>
+			<div style="display: table-cell; vertical-align: middle; float: right" ng-controller="SecurityController" ng-if="logged">
+				<button style="display: inline-block;" type="button" class="btn btn-info btn-lg" ng-click="logout()">Logout</button>			
+			</div>
+		</div>
+		<div ng-if="!cookieEnabled">
+			<div style="position: fixed; top: 0px; left: 0px; z-index: 3000; 
+				height: 100%; width: 100%; background-color: #FFFFFF">
+				<p style="margin-left: 10px">Browser cookies are not enabled.</p>
+			</div>
+		</div>
+		<noscript>
+			<div style="position: fixed; top: 0px; left: 0px; z-index: 3000; 
+				height: 100%; width: 100%; background-color: #FFFFFF">
+				<p style="margin-left: 10px">JavaScript is not enabled.</p>
+			</div>
+		</noscript>
+		<div ng-controller="SecurityController" class="col-sm-offset-4 col-sm-4" ng-if="!logged">		
+			<div ng-if="loginFormValidation.accessDenied">
+				<p class="text-danger">{{loginFormValidation.accessDeniedMessage}}</p>
+			</div>
+			<label>Username:</label>
+			<div ng-if="loginFormValidation.usernameError">
+				<p class="text-danger">{{loginFormValidation.usernameErrorMessage}}</p>
+			</div>
+			<input class="form-control" type="text" ng-model="loginForm.username" placeholder="Username..." ng-change="validateLoginForm()"/>
+			<br>
+			<label>Password:</label>
+			<div ng-if="loginFormValidation.passwordError">
+				<p class="text-danger">{{loginFormValidation.passwordErrorMessage}}</p>
+			</div>
+			<input class="form-control" type="password" ng-model="loginForm.password" placeholder="Password..." ng-change="validateLoginForm()"/>
+			<br>
+			<div style="margin-left: 35%;">
+				<button style="width: 50%" type="button" class="btn btn-primary" ng-click="login()">Login</button>	
+			</div>
+		</div>
+		<div class="col-sm-offset-2 col-sm-8" ng-if="logged">
+			<div>
+				<ul class="nav nav-pills nav-justified">
+					<li ng-click="selectTab(1)" ng-class="{'active': activeTab==1}"><a href="#">Genres</a></li>
+				</ul>
+			</div>
+			<hr>
+			<ng-switch on="activeTab">
+				<div ng-controller="GenreController">
+					<div ng-if="activeTab==1">
+						<form class="form-horizontal well">
+							<label>Genre name:</label>
+							<div ng-if="addGenreFormValidation.nameError">
+								<p class="text-danger">{{addGenreFormValidation.nameErrorMessage}}</p>
+							</div>
+							<input class="form-control" type="text" ng-model="addGenreForm.name" ng-change="validateAddGenreForm()"/>
+							<label>Genre description:</label>
+							<div ng-if="addGenreFormValidation.descriptionError">
+								<p class="text-danger">{{addGenreFormValidation.descriptionErrorMessage}}</p>
+							</div>
+							<input class="form-control" type="text" ng-model="addGenreForm.description" ng-change="validateAddGenreForm()"/>
+							<hr>
+							<button type="submit" class="btn btn-success" ng-click="insertGenre()">Add new genre</button>							
+						</form>
+						<div class="well">
+							<label>Genre filter:</label>
+							<input type="text" class="form-control ng-valid ng-dirty" ng-model="genreSearchKeyword">
+							<hr>							
+							<div ng-repeat="genre in genres | filter: genreSearchKeyword">
+								<div class="well">
+									<div ng-click="changeAccordionNumber(genre)" style="display: block-inline">
+										<p style="font-size: 20px" class="form-inline">{{genre.name}}</p>	
+										<span ng-if="accordionNumber!=genre.id" class="glyphicon glyphicon-chevron-down form-inline" style="font-size: 150%">
+										</span>
+										<span ng-if="accordionNumber==genre.id" class="glyphicon glyphicon-chevron-up form-inline" style="font-size: 150%;">
+										</span>
+									</div>
+									<div ng-show="genre.id==accordionNumber" >
+										<hr>	
+										<label>Genre name:</label>
+										<div ng-if="editGenreFormValidation.nameError">
+											<p class="text-danger">{{editGenreFormValidation.nameErrorMessage}}</p>
+										</div>
+										<input class="form-control" type="text" ng-model="editGenreForm.name" ng-disabled="!adminMode" ng-change="validateEditGenreForm()"/>
+										<label>Genre description:</label>
+										<div ng-if="editGenreFormValidation.descriptionError">
+											<p class="text-danger">{{editGenreFormValidation.descriptionErrorMessage}}</p>
+										</div>
+										<input class="form-control" type="text" ng-model="editGenreForm.description" ng-disabled="!adminMode" ng-change="validateEditGenreForm()"/>
+										<hr>
+										<button type="button" class="btn btn-danger" ng-click="changeAdminModeStatus()">
+											<div ng-if="adminMode">Disable admin mode</div>							
+											<div ng-if="!adminMode">Enable admin mode</div>
+										</button>	
+										<div class="btn-group btn-group" ng-if="adminMode">
+											<button type="submit" class="btn btn-warning" ng-click="updateGenre(editGenreForm)">Edit genre</button>
+											<button type="submit" class="btn btn-primary" ng-click="findTracksByGenre(editGenreForm)">Find tracks by genre</button>
+											<button type="submit" class="btn btn-info" ng-click="rollbackGenre(editGenreForm)">Return old values</button>
+											<button type="submit" class="btn btn-danger" ng-click="deleteGenre(genre)">Delete genre</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-switch>
+		</div>
+	</body>
+</html>
