@@ -25,7 +25,7 @@ import javax.ws.rs.core.Response;
 @Produces("application/json; charset=utf-8")
 public class SecurityResource {
 
-    final static Logger logger = Logger.getLogger("authenticate");
+    final static Logger logger = Logger.getLogger("authenticateResource");
 
     @Context
     ServletContext servletContext;
