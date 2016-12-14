@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by Сева on 14.12.2016.
+ * Created by Deamor(test for toto - push) on 14.12.2016.
  */
 @XmlRootElement
 public class Studio {
