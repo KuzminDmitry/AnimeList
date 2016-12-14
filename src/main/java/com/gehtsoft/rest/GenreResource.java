@@ -22,7 +22,7 @@ import java.util.List;
 @Produces("application/json; charset=utf-8")
 public class GenreResource {
 
-    final static Logger logger = Logger.getLogger("resource");
+    final static Logger logger = Logger.getLogger("genreResource");
 
     private Token token = null;
 

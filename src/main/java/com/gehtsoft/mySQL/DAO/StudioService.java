@@ -1,6 +1,6 @@
 package com.gehtsoft.mySQL.DAO;
 
-import com.gehtsoft.core.Genre;
+import com.gehtsoft.core.Studio;
 import com.gehtsoft.iDAO.IBasicService;
 import com.gehtsoft.mySQL.databaseConnection.DBConnection;
 import com.gehtsoft.mySQL.databaseConnection.DBConnectionPoolSingleton;
@@ -14,26 +14,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by dkuzmin on 7/6/2016.
- */
-public class GenreService implements IBasicService {
 
+public class StudioService implements IBasicService {
     final static Logger logger = Logger.getLogger("resource");
 
-    public Genre getFromResultSet(ResultSet resultSet) throws SQLException {
-        Genre genre = new Genre();
-        genre.setId(resultSet.getInt("id"));
-        genre.setName(resultSet.getString("fldName"));
-        genre.setDescription(resultSet.getString("fldDescription"));
+    public Studio getFromResultSet(ResultSet resultSet) throws SQLException {
+        Studio studio = new Studio();
+        studio.setId(resultSet.getInt("id"));
+        studio.setName(resultSet.getString("fldName"));
+        studio.setDescription(resultSet.getString("fldDescription"));
         if(logger.isDebugEnabled()){
-            logger.debug("Genre from result set: " + genre);
+            logger.debug("Studio from result set: " + studio);
         }
-        return genre;
+        return studio;
     }
 
     @Override
-    public List<Genre> getAll() throws SQLException, NamingException {
+    public List<Studio> getAll() throws SQLException, NamingException {
         if (logger.isDebugEnabled()) {
             logger.debug("Started.");
         }
@@ -41,22 +38,22 @@ public class GenreService implements IBasicService {
         while (dbConnection == null) {
             dbConnection = DBConnectionPoolSingleton.getInstance().getDBConnection();
         }
-        List<Genre> genres = new ArrayList<>();
-        String query = "select * from tbANIMEGenre";
+        List<Studio> studios = new ArrayList<>();
+        String query = "select * from tbANIMEStudio";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            genres.add(getFromResultSet(resultSet));
+            studios.add(getFromResultSet(resultSet));
         }
         DBConnectionPoolSingleton.getInstance().retrieveDBConnection(dbConnection);
         if (logger.isDebugEnabled()) {
-            logger.debug("Result of function genres: " + genres);
+            logger.debug("Result of function studios: " + studios);
         }
-        return genres;
+        return studios;
     }
 
     @Override
-    public Genre getById(Integer id) throws SQLException, NamingException {
+    public Studio getById(Integer id) throws SQLException, NamingException {
         if (logger.isDebugEnabled()) {
             logger.debug("Started with param id="+id);
         }
@@ -64,19 +61,19 @@ public class GenreService implements IBasicService {
         while (dbConnection == null) {
             dbConnection = DBConnectionPoolSingleton.getInstance().getDBConnection();
         }
-        String query = "select * from tbANIMEGenre where id = ?";
+        String query = "select * from tbANIMEStudio where id = ?";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
-        Genre genre = null;
+        Studio studio = null;
         if(resultSet.next()) {
-            genre = getFromResultSet(resultSet);
+            studio = getFromResultSet(resultSet);
         }
         DBConnectionPoolSingleton.getInstance().retrieveDBConnection(dbConnection);
         if (logger.isDebugEnabled()) {
-            logger.debug("Result of function genre: " + genre);
+            logger.debug("Result of function studio: " + studio);
         }
-        return genre;
+        return studio;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class GenreService implements IBasicService {
         }
         dbConnection.setAutoCommit(false);
 
-        String query = "delete from tbANIMEGenre where id = ?";
+        String query = "delete from tbANIMEStudio where id = ?";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.executeUpdate();
@@ -98,15 +95,15 @@ public class GenreService implements IBasicService {
         dbConnection.commit();
         DBConnectionPoolSingleton.getInstance().retrieveDBConnection(dbConnection);
         if (logger.isDebugEnabled()) {
-            logger.debug("Result of function deleted genre with id=" + id);
+            logger.debug("Result of function deleted studio with id=" + id);
         }
     }
 
     @Override
-    public Genre add(Object object) throws SQLException, NamingException {
-        Genre genre = (Genre) object;
+    public Studio add(Object object) throws SQLException, NamingException {
+        Studio studio = (Studio) object;
         if (logger.isDebugEnabled()) {
-            logger.debug("Started with param genre="+genre);
+            logger.debug("Started with param studio="+studio);
         }
         DBConnection dbConnection = DBConnectionPoolSingleton.getInstance().getDBConnection();
         while (dbConnection == null) {
@@ -114,33 +111,33 @@ public class GenreService implements IBasicService {
         }
         dbConnection.setAutoCommit(false);
 
-        String query = "insert into tbANIMEGenre (fldName, fldDescription) values(?, ?)";
+        String query = "insert into tbANIMEStudio (fldName, fldDescription) values(?, ?)";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        preparedStatement.setString(1, genre.getName());
-        preparedStatement.setString(2, genre.getDescription());
+        preparedStatement.setString(1, studio.getName());
+        preparedStatement.setString(2, studio.getDescription());
         preparedStatement.executeUpdate();
         try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
             if (generatedKeys.next()) {
-                genre.setId(generatedKeys.getInt(1));
+                studio.setId(generatedKeys.getInt(1));
             }
             else {
-                throw new SQLException("Creating genre failed, no id obtained.");
+                throw new SQLException("Creating studio failed, no id obtained.");
             }
         }
 
         dbConnection.commit();
         DBConnectionPoolSingleton.getInstance().retrieveDBConnection(dbConnection);
         if (logger.isDebugEnabled()) {
-            logger.debug("Result of function genre: " + genre);
+            logger.debug("Result of function studio: " + studio);
         }
-        return genre;
+        return studio;
     }
 
     @Override
-    public Genre update(Object object) throws SQLException, NamingException {
-        Genre genre = (Genre) object;
+    public Studio update(Object object) throws SQLException, NamingException {
+        Studio studio = (Studio) object;
         if (logger.isDebugEnabled()) {
-            logger.debug("Started with param genre="+genre);
+            logger.debug("Started with param genre="+studio);
         }
         DBConnection dbConnection = DBConnectionPoolSingleton.getInstance().getDBConnection();
         while (dbConnection == null) {
@@ -148,20 +145,18 @@ public class GenreService implements IBasicService {
         }
         dbConnection.setAutoCommit(false);
 
-        String query = "update tbANIMEGenre set fldName = ?, fldDescription = ? where id = ?";
+        String query = "update tbANIMEStudio set fldName = ?, fldDescription = ? where id = ?";
         PreparedStatement preparedStatement = dbConnection.prepareStatement(query);
-        preparedStatement.setString(1, genre.getName());
-        preparedStatement.setString(2, genre.getDescription());
-        preparedStatement.setInt(3, genre.getId());
+        preparedStatement.setString(1, studio.getName());
+        preparedStatement.setString(2, studio.getDescription());
+        preparedStatement.setInt(3, studio.getId());
         Integer result = preparedStatement.executeUpdate();
 
         dbConnection.commit();
         DBConnectionPoolSingleton.getInstance().retrieveDBConnection(dbConnection);
         if (logger.isDebugEnabled()) {
-            logger.debug("Result of function genre: " + genre);
+            logger.debug("Result of function studio: " + studio);
         }
-        return genre;
+        return studio;
     }
-
-
 }
