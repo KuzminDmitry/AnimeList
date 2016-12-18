@@ -18,7 +18,10 @@ public class EntityFactory {
             return ServiceFactory.getTypeService();
         } else if (c.equals(Rate.class)) {
             return ServiceFactory.getRateService();
-        } else {
+        }
+        else if(c.equals(Studio.class)){
+            return ServiceFactory.getStudioService();
+        }else {
             throw new ExceptionInInitializerError("There are no method in factory for " + c + "!");
         }
     }
