@@ -14,6 +14,10 @@ public class EntityFactory {
     public static IBasicService getBasicService(Class c) {
         if (c.equals(Genre.class)) {
             return ServiceFactory.getGenreService();
+        } else if (c.equals(Type.class)) {
+            return ServiceFactory.getTypeService();
+        } else if (c.equals(Rate.class)) {
+            return ServiceFactory.getRateService();
         } else {
             throw new ExceptionInInitializerError("There are no method in factory for " + c + "!");
         }

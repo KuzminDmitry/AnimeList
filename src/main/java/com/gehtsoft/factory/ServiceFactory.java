@@ -42,4 +42,20 @@ public class ServiceFactory {
             throw new ExceptionInInitializerError("There are no interface in factory for factory.database " + database + "!");
         }
     }
+
+    public static IBasicService getTypeService() {
+        if (database.equals("mysql")) {
+            return new TypeService();
+        } else {
+            throw new ExceptionInInitializerError("There are no interface in factory for factory.database " + database + "!");
+        }
+    }
+
+    public static IBasicService getRateService() {
+        if (database.equals("mysql")) {
+            return new RateService();
+        } else {
+            throw new ExceptionInInitializerError("There are no interface in factory for factory.database " + database + "!");
+        }
+    }
 }

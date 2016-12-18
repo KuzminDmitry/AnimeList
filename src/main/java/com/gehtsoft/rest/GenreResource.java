@@ -24,6 +24,7 @@ public class GenreResource {
 
     final static Logger logger = Logger.getLogger("genreResource");
 
+    @Context
     private Token token = null;
 
     @Context

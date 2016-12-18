@@ -21,6 +21,7 @@ import java.util.List;
 public class StudioResource {
     final static Logger logger = Logger.getLogger("studioResource");
 
+    @Context
     private Token token = null;
 
     @Context
