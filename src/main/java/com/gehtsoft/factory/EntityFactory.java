@@ -18,15 +18,15 @@ public class EntityFactory {
             return ServiceFactory.getTypeService();
         } else if (c.equals(Rate.class)) {
             return ServiceFactory.getRateService();
-        }
-		else if(c.equals(Studio.class)){
+        } else if (c.equals(Studio.class)) {
             return ServiceFactory.getStudioService();
-        }
-		} else if (c.equals(Producer.class)) {
+        } else if (c.equals(Producer.class)) {
             return ServiceFactory.getProducerService();
-        } else {            throw new ExceptionInInitializerError("There are no method in factory for " + c + "!");
+        } else {
+            throw new ExceptionInInitializerError("There are no method in factory for " + c + "!");
         }
     }
+
 
     public static IUserService getUserService(Class c) {
         if (c.equals(User.class)) {
