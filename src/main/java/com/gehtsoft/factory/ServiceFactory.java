@@ -58,4 +58,12 @@ public class ServiceFactory {
             throw new ExceptionInInitializerError("There are no interface in factory for factory.database " + database + "!");
         }
     }
+
+    public static IBasicService getProducerService() {
+        if (database.equals("mysql")) {
+            return new ProducerService();
+        } else {
+            throw new ExceptionInInitializerError("There are no interface in factory for factory.database " + database + "!");
+        }
+    }
 }
