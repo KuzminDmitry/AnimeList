@@ -46,7 +46,6 @@ public class GenreResource {
 
     @GET
     public List<Genre> getAllGenres() throws Exception {
-        if(token == null) return null;
         logger.info("Get all genres started.");
         return (List) ThreadPoolSingleton.getInstance().basicThread(Genre.class, "getAll", null);
 

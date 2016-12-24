@@ -46,7 +46,6 @@ public class RateResource {
 
     @GET
     public List<Rate> getAllRates() throws Exception {
-        if(token == null) return null;
         logger.info("Get all rates started.");
         return (List) ThreadPoolSingleton.getInstance().basicThread(Rate.class, "getAll", null);
 

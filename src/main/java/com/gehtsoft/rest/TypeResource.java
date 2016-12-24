@@ -46,7 +46,6 @@ public class TypeResource {
 
     @GET
     public List<Type> getAllTypes() throws Exception {
-        if(token == null) return null;
         logger.info("Get all types started.");
         return (List) ThreadPoolSingleton.getInstance().basicThread(Type.class, "getAll", null);
 

@@ -42,7 +42,6 @@ public class StudioResource {
     }
     @GET
     public List<Studio> getAllStudios() throws Exception {
-        if(token == null) return null;
         logger.info("Get all studios started.");
         return (List) ThreadPoolSingleton.getInstance().basicThread(Studio.class, "getAll", null);
     }
