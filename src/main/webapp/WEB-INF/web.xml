@@ -56,7 +56,7 @@
         <!--<init-param>-->
             <!--<param-name>jersey.config.server.provider.packages</param-name>-->
             <!--<param-value>-->
-                <!--com.omsu->
+                <!--com.omsu-->
             <!--</param-value>-->
         <!--</init-param>-->
         <!--<init-param>-->
