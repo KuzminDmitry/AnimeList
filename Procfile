@@ -1,1 +1,1 @@
-web: java -cp target/classes:target/dependency/* com.gehtsoft.main.Main
+web: java -cp target/classes:target/dependency/* com.omsu.main.Main
